@@ -36,46 +36,48 @@ public class AtyChooseMsg extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aty_choose_msg);
         ButterKnife.bind(this);
-        mFesId = getIntent().getIntExtra(FestivalCatigory.ID_FESTIVAL,-1);
-        mDatas=FestivalLab.getInstance().getMsgByFesId(mFesId);
+        mFesId = getIntent().getIntExtra(FestivalCatigory.ID_FESTIVAL, -1);
+        mDatas = FestivalLab.getInstance().getMsgByFesId(mFesId);
         setTitle(FestivalLab.getInstance().getFestivalById(mFesId).getName());
         fabChoosemsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-AtySendMsg.toActivity(AtyChooseMsg.this,mFesId,-1);
+                AtySendMsg.toActivity(AtyChooseMsg.this, mFesId, -1);
             }
         });
-        mAdapter=new ArrayAdapter<MsgBean>(this,-1,mDatas){
+        mAdapter = new ArrayAdapter<MsgBean>(this, -1, mDatas) {
 
             @Override
-            public View getView(final int position, View convertView,ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 ViewHolder holder;
-                if(convertView==null){
-                    convertView=LayoutInflater.from(AtyChooseMsg.this).inflate(R.layout.item_msg,parent,false);
-                holder=new ViewHolder(convertView);
-                convertView.setTag(holder);
-                }else{
-                    holder=(ViewHolder)convertView.getTag();
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(AtyChooseMsg.this).inflate(R.layout.item_msg, parent, false);
+                    holder = new ViewHolder(convertView);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
                 }
                 MsgBean msg = getItem(position);
-                holder.tvMsgContent.setText("  "+msg.getContent());
+                holder.tvMsgContent.setText("  " + msg.getContent());
                 holder.btnToSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AtySendMsg.toActivity(AtyChooseMsg.this,mFesId,getItem(position).getId());
+                        AtySendMsg.toActivity(AtyChooseMsg.this, mFesId, getItem(position).getId());
                     }
                 });
-                return  convertView;
+                return convertView;
             }
         };
         lvChoosemsg.setAdapter(mAdapter);
     }
-    class ViewHolder{
+
+    class ViewHolder {
         TextView tvMsgContent;
         Button btnToSend;
-        ViewHolder(View view){
-tvMsgContent=view.findViewById(R.id.tv_item_content);
-btnToSend=view.findViewById(R.id.btn_item_tosend);
+
+        ViewHolder(View view) {
+            tvMsgContent = view.findViewById(R.id.tv_item_content);
+            btnToSend = view.findViewById(R.id.btn_item_tosend);
         }
 
     }
